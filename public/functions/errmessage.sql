@@ -12,5 +12,5 @@ BEGIN
                _detail  detail) s
     INTO _errors;
 
-    RETURN JSONB_OBJECT_AGG('errors', _errors)::JSONB;
+    RETURN JSONB_OBJECT_AGG('errors', _errors)::JSONB
 END;
