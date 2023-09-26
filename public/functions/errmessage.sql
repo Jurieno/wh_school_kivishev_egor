@@ -14,3 +14,4 @@ BEGIN
 
     RETURN JSONB_OBJECT_AGG('errors', _errors)::JSONB;
 END;
+$$;
