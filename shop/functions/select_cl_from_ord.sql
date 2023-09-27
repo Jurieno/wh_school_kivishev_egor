@@ -28,10 +28,6 @@ BEGIN
 END
 $$;
 
-select shop.select_cl_from_ord('{
-  "tovarid": 5
-}');
-
 
 
 

@@ -31,7 +31,3 @@ BEGIN
 
 END
 $$;
-
-SELECT shop.select_orders('{
-  "client_id": 3
-}');

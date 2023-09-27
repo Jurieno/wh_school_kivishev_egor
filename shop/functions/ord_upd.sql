@@ -62,18 +62,3 @@ BEGIN
 
 END
 $$;
-
-SELECT shop.ord_upd('[
-  {
-    "order_id": 35,
-    "client_id": 3,
-    "product_id": 25,
-    "cost": 3
-  },
-  {
-    "order_id": 36,
-    "client_id": 5,
-    "product_id": 2,
-    "cost": 1
-  }
-]');

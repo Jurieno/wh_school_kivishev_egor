@@ -18,5 +18,3 @@ BEGIN
                                           GROUP BY s.id_client) r)) res;
 END
 $$;
-
-select shop.select_client_avg();

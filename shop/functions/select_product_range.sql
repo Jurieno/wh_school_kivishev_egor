@@ -18,8 +18,3 @@ BEGIN
           WHERE p.price <@ numrange(_to_price, _do_price, '[]')) res;
 END
 $$;
-
-SELECT shop.select_product_range('{
-"to_price": 100.00,
-"do_price": 6000.80
-}');

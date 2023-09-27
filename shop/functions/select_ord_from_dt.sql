@@ -22,7 +22,3 @@ BEGIN
               GROUP BY o.client_id, o.product_id, p.title, c.name) res;
 END
 $$;
-
-SELECT shop.select_ord_from_dt('{
-  "dt": "2023-09-03"
-}');
