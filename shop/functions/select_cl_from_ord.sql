@@ -1,5 +1,4 @@
-create
-    or replace function shop.select_cl_from_ord(_src jsonb) returns jsonb
+CREATE OR REPLACE FUNCTION shop.select_cl_from_ord(_src jsonb) RETURNS jsonb
     security definer
     language plpgsql
 as
