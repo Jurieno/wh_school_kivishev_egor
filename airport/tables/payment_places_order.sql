@@ -1,4 +1,4 @@
-CREATE TABLE airport.payment_places_order
+CREATE TABLE IF NOT EXISTS airport.payment_places_order
 (
     payment_id BIGINT NOT NULL,
     place_id BIGINT NOT NULL,
