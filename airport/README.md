@@ -54,7 +54,7 @@ SELECT airport.airfield_upd('{
   "is_active": 0
 }');
 ```
-### Пример исключения
+##### Пример исключения
 ```json
 {
   "errors": [
@@ -123,7 +123,7 @@ SELECT airport.airplane_upd('{
   "is_active": 0
 }')
 ```
-### Примеры исключений
+##### Примеры исключений
 ```json
 {
   "errors": [
@@ -205,8 +205,19 @@ SELECT airport.place_upd('{
   "type_place_id": 1
 }');
 ```
-### Примеры исключений
-```json
+##### Примеры исключений
+```
+{
+  "errors": [
+    {
+      "error": "airport.place_upd.exceeded_the_seats",
+      "detail": "Эконом и комфорт места.",
+      "message": "Количество посадочных мест превышено указанному в параметрах самолёта."
+    }
+  ]
+}
+```
+```
 {
   "errors": [
     {
@@ -217,13 +228,77 @@ SELECT airport.place_upd('{
   ]
 }
 ```
+
+### Таблица flights
+```sql
+CREATE TABLE IF NOT EXISTS airport.flights
+(
+    flight_id              BIGSERIAL
+        CONSTRAINT pk_flight PRIMARY KEY,
+    airplane_id            INT           NOT NULL,
+    dt_take_off            TIMESTAMPTZ   NOT NULL,
+    dt_landing             TIMESTAMPTZ   NOT NULL,
+    airfield_take_off_code CHAR(3)       NOT NULL,
+    airfield_landing_code  CHAR(3)       NOT NULL,
+    price                  NUMERIC(8, 2) NOT NULL,
+    pets                   BOOLEAN       NOT NULL
+);
+```
+В ней описаны следующие поля:
+```
+flight_id              - ID рейса
+airplane_id            - ID самолёта
+dt_take_off            - Дата вылета
+dt_landing             - Дата посадки
+airfield_take_off_code - Аэропорт вылета
+airfield_landing_code  - Аэропорт посадки
+price                  - Минимальная цена билета
+pets                   - Перелёт с животным до 10кг в салоне
+```
+##### Пример создания рейса
+```sql
+SELECT airport.flight_upd('{
+  "airplane_id": 1,
+  "dt_take_off": "2023-10-17 18:09:47.407130 +00:00",
+  "dt_landing": "2023-10-17 23:09:47.407130 +00:00",
+  "airfield_take_off_code": "ЯКУ",
+  "airfield_landing_code": "КЕМ",
+  "price": 13000.00,
+  "pets": 0
+}');
+```
+##### Пример обновления рейса
+```sql
+SELECT airport.flight_upd('{
+  "flight_id": 2,
+  "airplane_id": 1,
+  "dt_take_off": "2023-10-17 18:09:47.407130 +00:00",
+  "dt_landing": "2023-10-17 23:09:47.407130 +00:00",
+  "airfield_take_off_code": "КЕМ",
+  "airfield_landing_code": "ЯКУ",
+  "price": 13000.00,
+  "pets": 0
+}');
+```
+### Примеры исключений
 ```json
 {
   "errors": [
     {
-      "error": "airport.place_upd.exceeded_the_seats",
-      "detail": "Эконом и комфорт места.",
-      "message": "Количество посадочных мест превышено указанному в параметрах самолёта."
+      "error": "airport.flight_upd",
+      "detail": null,
+      "message": "Аэропорт вылета не может совпадать с аэропортом посадки."
+    }
+  ]
+}
+```
+```json
+{
+  "errors": [
+    {
+      "error": "airport.flight_upd",
+      "detail": null,
+      "message": "Цена не может быть ниже или равна нулю."
     }
   ]
 }

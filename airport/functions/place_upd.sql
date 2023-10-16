@@ -28,7 +28,7 @@ BEGIN
                                  'Эконом и комфорт места.');
     end if;
 
-    IF (SELECT a.capacity_business
+    IF (SELECT a.capacity_business + a.capacity_eco
         FROM airport.airplanes a
         WHERE a.airplane_id = _airplane_id) < _place_num AND _type_place_id = 3
     THEN

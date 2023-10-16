@@ -75,8 +75,7 @@ BEGIN
                    _capacity_business,
                    _is_active
             ON CONFLICT (airplane_id) DO UPDATE
-                SET airplane_id = excluded.airplane_id,
-                    airline_name = excluded.airline_name,
+                SET airline_name = excluded.airline_name,
                     name = excluded.name,
                     speed = excluded.speed,
                     flight_range = excluded.flight_range,
