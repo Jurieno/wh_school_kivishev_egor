@@ -169,3 +169,62 @@ SELECT airport.airplane_upd('{
 }
 ```
 
+### Таблица places
+```sql
+CREATE TABLE IF NOT EXISTS airport.places
+(
+    place_id      BIGSERIAL NOT NULL
+        CONSTRAINT pk_place PRIMARY KEY,
+    place_num     SMALLINT  NOT NULL,
+    airplane_id   INT       NOT NULL,
+    type_place_id SMALLINT  NOT NULL,
+    CONSTRAINT uq_place_airplane UNIQUE (place_num, airplane_id)
+)
+```
+В ней описаны следующие поля:
+```
+place_id      - ID места
+place_num     - Номер места внутри самолёта
+airplane_id   - ID самолёта
+type_place_id - ID типа места
+```
+##### Пример создания места
+```sql
+SELECT airport.place_upd('{
+  "place_num": 8,
+  "airplane_id": 1,
+  "type_place_id": 3
+}');
+```
+##### Пример обновления данных места
+```sql
+SELECT airport.place_upd('{
+  "place_id": 8,
+  "place_num": 8,
+  "airplane_id": 1,
+  "type_place_id": 1
+}');
+```
+### Примеры исключений
+```json
+{
+  "errors": [
+    {
+      "error": "airport.place_upd.exceeded_the_seats",
+      "detail": "Бизнес места.",
+      "message": "Количество посадочных мест превышено указанному в параметрах самолёта."
+    }
+  ]
+}
+```
+```json
+{
+  "errors": [
+    {
+      "error": "airport.place_upd.exceeded_the_seats",
+      "detail": "Эконом и комфорт места.",
+      "message": "Количество посадочных мест превышено указанному в параметрах самолёта."
+    }
+  ]
+}
+```
