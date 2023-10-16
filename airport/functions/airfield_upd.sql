@@ -31,6 +31,13 @@ BEGIN
                                      name VARCHAR(70),
                                      is_active BOOLEAN);
 
+    IF EXISTS(SELECT 1 FROM airport.airfields a WHERE a.city = _city AND a.street = _street AND a.airfields_code != _airfields_code)
+    THEN
+        RETURN public.errmessage('airport.airfield_upd.repeat_city_street',
+                                 'Аэропорт по этому адресу уже существует.',
+                                 NULL);
+    end if;
+
     INSERT INTO airport.airfields AS a (airfields_code,
                                         count_runway,
                                         count_helipad,

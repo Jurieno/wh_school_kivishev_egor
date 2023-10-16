@@ -12,7 +12,7 @@ DECLARE
     _capacity_eco      SMALLINT;
     _capacity_business SMALLINT;
     _is_active         BOOLEAN;
-    _updated           BOOLEAN := false;
+    _err_message       VARCHAR(500);
 BEGIN
     SELECT COALESCE(a.airplane_id, nextval('airport.airplanes_airplane_id_seq')) as airplane_id,
            a.airline_name,
@@ -32,8 +32,29 @@ BEGIN
                                      capacity_business SMALLINT,
                                      is_active BOOLEAN);
 
+    SELECT CASE
+               WHEN _speed < 1 THEN 'Скорость не может быть ниже единицы.'
+               WHEN _flight_range < 1 THEN 'Дальность полёта не может быть ниже единицы.'
+               WHEN _capacity_eco < 1 THEN 'Количество мест эконом класса не может быть меньше одного.'
+               WHEN _capacity_business < 0 THEN 'Количество мест бизнес класса не может быть отрицательным.' END
+    INTO _err_message;
+    IF _err_message IS NOT NULL THEN
+        RETURN public.errmessage('airport.airplane_upd.empty_params_or_negative', _err_message, NULL);
+    end if;
+
+
     IF (SELECT 1 FROM airport.airplanes a WHERE a.airplane_id = _airplane_id) THEN
-        _updated = true;
+        INSERT INTO airport.places
+        SELECT nextval('airport.places_place_id_seq'),
+               generate_series(1, _capacity_eco),
+               _airplane_id,
+               1;
+
+        INSERT INTO airport.places
+        SELECT nextval('airport.places_place_id_seq'),
+               generate_series(_capacity_eco + 1, _capacity_business + _capacity_eco),
+               _airplane_id,
+               3;
     end if;
 
     WITH ins_cte AS (
@@ -81,20 +102,6 @@ BEGIN
            c.capacity_business,
            c.is_active
     FROM ins_cte c;
-
-    IF NOT _updated THEN
-        INSERT INTO airport.places
-        SELECT nextval('airport.places_place_id_seq'),
-               generate_series(1, _capacity_eco),
-               _airplane_id,
-               1;
-
-        INSERT INTO airport.places
-        SELECT nextval('airport.places_place_id_seq'),
-               generate_series(_capacity_eco + 1, _capacity_business + _capacity_eco),
-               _airplane_id,
-               3;
-    end if;
 
     RETURN JSONB_BUILD_OBJECT('data', NULL);
 END

@@ -8,7 +8,6 @@ DECLARE
     _place_num     SMALLINT;
     _airplane_id   INT;
     _type_place_id SMALLINT;
-    _err_message   VARCHAR(500);
 BEGIN
     SELECT COALESCE(s.place_id, nextval('airport.places_place_id_seq')) as place_id,
            s.place_num,
@@ -31,7 +30,7 @@ BEGIN
 
     IF (SELECT a.capacity_business
         FROM airport.airplanes a
-        WHERE a.airplane_id = _airplane_id) < _place_num AND  _type_place_id = 3
+        WHERE a.airplane_id = _airplane_id) < _place_num AND _type_place_id = 3
     THEN
         RETURN public.errmessage('airport.place_upd.exceeded_the_seats',
                                  'Количество посадочных мест превышено указанному в параметрах самолёта.',
