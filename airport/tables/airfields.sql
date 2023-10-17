@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS airport.airfields
     city           VARCHAR(32) NOT NULL,
     street         VARCHAR(50) NOT NULL,
     name           VARCHAR(70) NOT NULL,
+    is_active      BOOLEAN,
     CONSTRAINT uq_airfields_ct_st UNIQUE (city, street)
 );
