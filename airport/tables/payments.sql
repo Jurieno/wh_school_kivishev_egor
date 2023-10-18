@@ -7,5 +7,6 @@ CREATE TABLE IF NOT EXISTS airport.payments
     price       NUMERIC(8, 2) NOT NULL,
     dt_booking  TIMESTAMPTZ   NOT NULL,
     dt_payment  TIMESTAMPTZ,
+    dt_ch       TIMESTAMPTZ   NOT NULL,
     valid       BOOLEAN
 );
