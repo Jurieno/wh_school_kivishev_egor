@@ -12,5 +12,4 @@ VALUES (1, 'Стандарт', 1.0),
        (3, 'Бизнес', 3.0)
 ON CONFLICT (type_place_id) DO UPDATE
     SET title  = excluded.title,
-        markup = excluded.markup
-WHERE type_place_id = excluded.type_place_id;
+        markup = excluded.markup;

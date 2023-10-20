@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION airport.flight_upd(_src jsonb) RETURNS jsonb
     SECURITY DEFINER
     LANGUAGE plpgsql
-as
+AS
 $$
 DECLARE
     _flight_id              BIGINT;
@@ -15,7 +15,7 @@ DECLARE
     _err_message            VARCHAR(500);
     _dt_ch                  timestamptz := now();
 BEGIN
-    SELECT COALESCE(f.flight_id, nextval('airport.flights_flight_id_seq')),
+    SELECT COALESCE(ff.flight_id, nextval('airport.flights_flight_id_seq')),
            f.airplane_id,
            f.dt_take_off,
            f.dt_landing,
@@ -31,7 +31,8 @@ BEGIN
                                      airfield_take_off_code CHAR(3),
                                      airfield_landing_code CHAR(3),
                                      price NUMERIC(8, 2),
-                                     pets BOOLEAN);
+                                     pets BOOLEAN)
+             LEFT JOIN airport.flights ff ON ff.flight_id = f.flight_id;
 
     SELECT CASE
                WHEN _airfield_take_off_code = _airfield_landing_code

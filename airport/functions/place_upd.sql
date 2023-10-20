@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION airport.place_upd(_src jsonb) RETURNS jsonb
     SECURITY DEFINER
     LANGUAGE plpgsql
-as
+AS
 $$
 DECLARE
     _place_id      BIGINT;
@@ -9,15 +9,16 @@ DECLARE
     _airplane_id   INT;
     _type_place_id SMALLINT;
 BEGIN
-    SELECT COALESCE(s.place_id, nextval('airport.places_place_id_seq')) as place_id,
-           s.place_num,
-           s.airplane_id,
-           s.type_place_id
+    SELECT COALESCE(pp.place_id, nextval('airport.places_place_id_seq')) as place_id,
+           p.place_num,
+           p.airplane_id,
+           p.type_place_id
     INTO _place_id, _place_num, _airplane_id, _type_place_id
-    FROM jsonb_to_record(_src) AS s (place_id BIGINT,
+    FROM jsonb_to_record(_src) AS p (place_id BIGINT,
                                      place_num SMALLINT,
                                      airplane_id INT,
-                                     type_place_id SMALLINT);
+                                     type_place_id SMALLINT)
+    LEFT JOIN airport.places pp ON p.place_id = pp.place_id;
 
     IF (SELECT a.capacity_eco
         FROM airport.airplanes a
@@ -26,7 +27,7 @@ BEGIN
         RETURN public.errmessage('airport.place_upd.exceeded_the_seats',
                                  'Количество посадочных мест превышено указанному в параметрах самолёта.',
                                  'Эконом и комфорт места.');
-    end if;
+    END IF;
 
     IF (SELECT a.capacity_business + a.capacity_eco
         FROM airport.airplanes a
@@ -35,7 +36,7 @@ BEGIN
         RETURN public.errmessage('airport.place_upd.exceeded_the_seats',
                                  'Количество посадочных мест превышено указанному в параметрах самолёта.',
                                  'Бизнес места.');
-    end if;
+    END IF;
 
     INSERT INTO airport.places AS a (place_id,
                                      place_num,

@@ -10,7 +10,7 @@ DECLARE
     _lastname     varchar(50);
     _phone_number varchar(11);
 BEGIN
-    SELECT COALESCE(p.personal_id, nextval('users.personal_personal_id_seq')) as personal_id,
+    SELECT COALESCE(pp.personal_id, nextval('users.personal_personal_id_seq')) as personal_id,
            p.role_id,
            p.firstname,
            p.lastname,
@@ -20,7 +20,8 @@ BEGIN
                                      role_id INT,
                                      firstname VARCHAR(50),
                                      lastname varchar(50),
-                                     phone_number varchar(11));
+                                     phone_number varchar(11))
+    LEFT JOIN users.personals pp ON p.personal_id = pp.personal_id;
 
     INSERT INTO users.personal AS e (personal_id,
                                      role_id,
