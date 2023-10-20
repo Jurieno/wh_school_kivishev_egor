@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS sync.paymentssync
     payment_id  BIGINT                   NOT NULL,
     flight_id   BIGINT                   NOT NULL,
     employee_id BIGINT                   NOT NULL,
-    price       NUMERIC(8, 2)            NOT NULL,
+    price       NUMERIC(8, 2),
     dt_booking  TIMESTAMPTZ              NOT NULL,
     dt_payment  TIMESTAMPTZ,
     dt_ch       TIMESTAMPTZ,

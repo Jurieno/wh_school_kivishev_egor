@@ -15,7 +15,7 @@ DECLARE
     _dt_birthday  DATE;
     _gender       BOOLEAN;
 BEGIN
-    SELECT COALESCE(e.employee_id, nextval('users.personal_personal_id_seq')) AS employee_id,
+    SELECT COALESCE(ee.employee_id, nextval('users.personal_personal_id_seq')) AS employee_id,
            e.num_series,
            e.num_pass,
            e.dt_issue,
@@ -35,9 +35,14 @@ BEGIN
                                      firstname varchar(50),
                                      lastname varchar(70),
                                      dt_birthday DATE,
-                                     gender BOOLEAN);
+                                     gender BOOLEAN)
+             LEFT JOIN users.employees ee ON e.employee_id = ee.employee_id;
 
-    IF EXISTS(SELECT 1 FROM users.employees e WHERE e.num_series = _num_series AND e.num_pass = _num_pass AND e.employee_id != _employee_id)
+    IF EXISTS(SELECT 1
+              FROM users.employees e
+              WHERE e.num_series = _num_series
+                AND e.num_pass = _num_pass
+                AND e.employee_id != _employee_id)
     THEN
         RETURN public.errmessage('users.employee_upd.repeat_series_pass',
                                  'Такой пользователь с серией и номером паспорта уже зарегистрирован.',

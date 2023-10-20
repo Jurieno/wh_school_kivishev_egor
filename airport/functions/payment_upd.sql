@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION airport.payment_upd(_src jsonb, _em_ch INT) RETURNS jsonb
+CREATE OR REPLACE FUNCTION airport.payment_upd(_src jsonb, _data json, _em_ch INT) RETURNS jsonb
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -13,7 +13,7 @@ DECLARE
     _valid       BOOLEAN;
     _dt_ch       TIMESTAMPTZ := now();
 BEGIN
-    SELECT p.payment_id,
+    SELECT COALESCE(pp.payment_id, nextval('airport.payments_payment_id_seq')),
            p.flight_id,
            p.employee_id,
            p.dt_booking,
@@ -25,7 +25,13 @@ BEGIN
                                      employee_id BIGINT,
                                      dt_booking TIMESTAMPTZ,
                                      dt_payment TIMESTAMPTZ,
-                                     valid BOOLEAN);
+                                     valid BOOLEAN)
+             LEFT JOIN airport.payments pp ON pp.payment_id = p.payment_id;
+
+    IF NOT EXISTS(SELECT 1 FROM airport.payments p WHERE p.payment_id = _payment_id) THEN
+        SELECT airport.payment_places_ins(_data, _payment_id, _flight_id)
+        INTO _price;
+    END IF;
 
     WITH ins_cte AS (
         INSERT INTO airport.payments AS p (payment_id,
@@ -73,14 +79,15 @@ BEGIN
                    _dt_ch as dt_ch,
                    _em_ch as employee_ch
             FROM ins_cte ic)
-    INSERT INTO sync.paymentssync(payment_id,
-                                  flight_id,
-                                  employee_id,
-                                  price,
-                                  dt_booking,
-                                  dt_payment,
-                                  dt_ch,
-                                  valid)
+    INSERT
+    INTO sync.paymentssync(payment_id,
+                           flight_id,
+                           employee_id,
+                           price,
+                           dt_booking,
+                           dt_payment,
+                           dt_ch,
+                           valid)
     SELECT ic.payment_id,
            ic.flight_id,
            ic.employee_id,

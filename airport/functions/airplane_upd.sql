@@ -14,7 +14,7 @@ DECLARE
     _is_active         BOOLEAN;
     _err_message       VARCHAR(500);
 BEGIN
-    SELECT COALESCE(a.airplane_id, nextval('airport.airplanes_airplane_id_seq')) as airplane_id,
+    SELECT COALESCE(aa.airplane_id, nextval('airport.airplanes_airplane_id_seq')) as airplane_id,
            a.airline_name,
            a.name,
            a.speed,
@@ -30,7 +30,8 @@ BEGIN
                                      flight_range SMALLINT,
                                      capacity_eco SMALLINT,
                                      capacity_business SMALLINT,
-                                     is_active BOOLEAN);
+                                     is_active BOOLEAN)
+             LEFT JOIN airport.airplanes aa ON a.airplane_id = aa.airplane_id;
 
     SELECT CASE
                WHEN _speed < 1 THEN 'Скорость не может быть ниже единицы.'
