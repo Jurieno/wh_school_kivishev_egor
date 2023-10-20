@@ -11,7 +11,7 @@ BEGIN
                      p.flight_id
               FROM airport.payment_places_order p
               WHERE p.payment_id = COALESCE(_payment_id, p.payment_id)
-                AND p.employee_id = COALESCE(_place_id, p.employee_id)
+                AND p.place_id = COALESCE(_place_id, p.place_id)
                 AND p.flight_id = COALESCE(_flight_id, p.flight_id)) res;
 
 END

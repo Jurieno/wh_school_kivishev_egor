@@ -14,7 +14,7 @@ BEGIN
                      a.street,
                      a.name,
                      a.is_active
-              FROM airport.airfield a
+              FROM airport.airfields a
               WHERE a.airfields_code = COALESCE(_airfields_code, a.airfields_code)
                 AND a.city = COALESCE(_city, a.city)
                 AND a.is_active = COALESCE(_is_active, a.is_active)) res;

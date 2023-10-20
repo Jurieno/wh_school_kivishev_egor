@@ -1,3 +1,6 @@
+[1. Таблица employees](#Таблица-employees)<br>
+[2. Таблица personal](#Таблица-personal)
+
 # Схема users
 
 ### Таблица employees
@@ -32,7 +35,7 @@ dt_birthday  - Дата рождения
 gender       - Пол
 ```
 Ограничение уникальности установлено на 2 поля: num_series, num_pass
-### Пример создания пассажира
+##### Пример создания пассажира
 ```sql
 SELECT users.employee_upd('{
   "num_series": "1238",
@@ -46,7 +49,7 @@ SELECT users.employee_upd('{
   "gender": 0
 }');
 ```
-### Пример обновления данных пассажира
+##### Пример обновления данных пассажира
 ```sql
 SELECT users.employee_upd('{
   "employee_id": 4,
@@ -61,7 +64,7 @@ SELECT users.employee_upd('{
   "gender": 0
 }');
 ```
-### Пример исключения
+##### Пример исключения
 ```json
 {
   "errors": [
@@ -73,6 +76,119 @@ SELECT users.employee_upd('{
   ]
 }
 ```
+##### Примеры GET запросов
+```sql
+employee_get(_employee_id bigint, _num_series integer, _num_pass character, _phone_number varchar)
+```
+```sql
+SELECT users.employee_get(NULL, NULL, NULL, NULL);
+```
+```json
+{
+  "data": [
+    {
+      "email": "tutatuta@mail.ru",
+      "gender": false,
+      "dt_issue": "2022-02-01",
+      "lastname": "Васильев",
+      "num_pass": "123656 ",
+      "firstname": "Пётр",
+      "num_series": 1231,
+      "dt_birthday": "2001-02-01",
+      "employee_id": 1,
+      "phone_number": "79253290022"
+    },
+    {
+      "email": "tutatuta@mail.ru",
+      "gender": false,
+      "dt_issue": "2022-02-01",
+      "lastname": "Васильев",
+      "num_pass": "123655 ",
+      "firstname": "Пётр",
+      "num_series": 1231,
+      "dt_birthday": "2001-02-01",
+      "employee_id": 3,
+      "phone_number": "79253290022"
+    },
+    {
+      "email": "tutatuta@mail.ru",
+      "gender": false,
+      "dt_issue": "2022-02-01",
+      "lastname": "Павлов",
+      "num_pass": "123659 ",
+      "firstname": "Егор",
+      "num_series": 1238,
+      "dt_birthday": "2002-03-01",
+      "employee_id": 4,
+      "phone_number": "79253290000"
+    }
+  ]
+}
+```
+```sql
+SELECT users.employee_get(NULL, 1231, '123656 '::char(7), NULL);
+```
+```json
+{
+  "data": [
+    {
+      "email": "tutatuta@mail.ru",
+      "gender": false,
+      "dt_issue": "2022-02-01",
+      "lastname": "Васильев",
+      "num_pass": "123656 ",
+      "firstname": "Пётр",
+      "num_series": 1231,
+      "dt_birthday": "2001-02-01",
+      "employee_id": 1,
+      "phone_number": "79253290022"
+    }
+  ]
+}
+```
+```sql
+SELECT users.employee_get(3, NULL, NULL, NULL);
+```
+```json
+{
+  "data": [
+    {
+      "email": "tutatuta@mail.ru",
+      "gender": false,
+      "dt_issue": "2022-02-01",
+      "lastname": "Васильев",
+      "num_pass": "123655 ",
+      "firstname": "Пётр",
+      "num_series": 1231,
+      "dt_birthday": "2001-02-01",
+      "employee_id": 3,
+      "phone_number": "79253290022"
+    }
+  ]
+}
+```
+```sql
+SELECT users.employee_get(NULL, NULL, NULL, '79253290000');
+```
+```json
+{
+  "data": [
+    {
+      "email": "tutatuta@mail.ru",
+      "gender": false,
+      "dt_issue": "2022-02-01",
+      "lastname": "Павлов",
+      "num_pass": "123659 ",
+      "firstname": "Егор",
+      "num_series": 1238,
+      "dt_birthday": "2002-03-01",
+      "employee_id": 4,
+      "phone_number": "79253290000"
+    }
+  ]
+}
+```
+
 ### Таблица personal
 ```sql
 CREATE TABLE IF NOT EXISTS users.personal
@@ -93,7 +209,7 @@ firstname    - Имя
 lastname     - Фамилия
 phone_number - Номер телефона
 ```
-### Пример добавления персонала
+##### Пример добавления персонала
 ```sql
 SELECT users.personal_upd('{
   "role_id": 1,
@@ -102,7 +218,7 @@ SELECT users.personal_upd('{
   "phone_number": "79233290022"
 }');
 ```
-### Пример изменения данных персонала
+##### Пример изменения данных персонала
 ```sql
 SELECT users.personal_upd('{
   "personal_id": 5,
@@ -111,4 +227,114 @@ SELECT users.personal_upd('{
   "lastname": "Птушкин",
   "phone_number": "79230001100"
 }');
+```
+##### Пример GET запросов
+```sql
+personal_get(_personal_id integer, _role_id integer, _phone_number varchar)
+```
+```sql
+SELECT users.personal_get(NULL, NULL, NULL);
+```
+```json
+{
+  "data": [
+    {
+      "role_id": 1,
+      "lastname": "Птушкин",
+      "firstname": "Василий",
+      "personal_id": 5,
+      "phone_number": "79233290022"
+    },
+    {
+      "role_id": 2,
+      "lastname": "Васин",
+      "firstname": "Георгий",
+      "personal_id": 6,
+      "phone_number": "79005553344"
+    },
+    {
+      "role_id": 2,
+      "lastname": "Георгин",
+      "firstname": "Василий",
+      "personal_id": 7,
+      "phone_number": "79005553224"
+    },
+    {
+      "role_id": 2,
+      "lastname": "Болошко",
+      "firstname": "Анна",
+      "personal_id": 8,
+      "phone_number": "79005550000"
+    },
+    {
+      "role_id": 1,
+      "lastname": "Кривченко",
+      "firstname": "Фёдор",
+      "personal_id": 9,
+      "phone_number": "79005551122"
+    }
+  ]
+}
+```
+```sql
+SELECT users.personal_get(7, NULL, NULL);
+```
+```json
+{
+  "data": [
+    {
+      "role_id": 2,
+      "lastname": "Георгин",
+      "firstname": "Василий",
+      "personal_id": 7,
+      "phone_number": "79005553224"
+    }
+  ]
+}
+```
+```sql
+SELECT users.personal_get(NULL, 2, NULL);
+```
+```json
+{
+  "data": [
+    {
+      "role_id": 2,
+      "lastname": "Васин",
+      "firstname": "Георгий",
+      "personal_id": 6,
+      "phone_number": "79005553344"
+    },
+    {
+      "role_id": 2,
+      "lastname": "Георгин",
+      "firstname": "Василий",
+      "personal_id": 7,
+      "phone_number": "79005553224"
+    },
+    {
+      "role_id": 2,
+      "lastname": "Болошко",
+      "firstname": "Анна",
+      "personal_id": 8,
+      "phone_number": "79005550000"
+    }
+  ]
+}
+```
+```sql
+SELECT users.personal_get(NULL, NULL, '79005553224');
+```
+```json
+{
+  "data": [
+    {
+      "role_id": 2,
+      "lastname": "Георгин",
+      "firstname": "Василий",
+      "personal_id": 7,
+      "phone_number": "79005553224"
+    }
+  ]
+}
 ```
