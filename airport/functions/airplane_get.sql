@@ -14,7 +14,7 @@ BEGIN
                      a.capacity_eco,
                      a.capacity_business,
                      a.is_active
-              FROM airport.airplane a
+              FROM airport.airplanes a
               WHERE a.airplane_id = COALESCE(_airplane_id, a.airplane_id)
                 AND a.name = COALESCE(_name, a.name)
                 AND a.is_active = COALESCE(_is_active, a.is_active)) res;
