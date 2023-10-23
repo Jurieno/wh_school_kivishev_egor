@@ -41,7 +41,7 @@ BEGIN
     INTO _err_message;
     IF _err_message IS NOT NULL THEN
         RETURN public.errmessage('airport.airplane_upd.empty_params_or_negative', _err_message, NULL);
-    end if;
+    END IF;
 
 
     IF (SELECT 1 FROM airport.airplanes a WHERE a.airplane_id = _airplane_id) THEN
@@ -56,7 +56,7 @@ BEGIN
                generate_series(_capacity_eco + 1, _capacity_business + _capacity_eco),
                _airplane_id,
                3;
-    end if;
+    END IF;
 
     WITH ins_cte AS (
         INSERT INTO airport.airplanes AS a (airplane_id,

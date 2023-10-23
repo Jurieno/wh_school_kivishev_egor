@@ -76,8 +76,8 @@ BEGIN
                    ic.dt_booking,
                    ic.dt_payment,
                    ic.valid,
-                   _dt_ch as dt_ch,
-                   _em_ch as employee_ch
+                   _dt_ch AS dt_ch,
+                   _em_ch AS employee_ch
             FROM ins_cte ic)
     INSERT
     INTO sync.paymentssync(payment_id,

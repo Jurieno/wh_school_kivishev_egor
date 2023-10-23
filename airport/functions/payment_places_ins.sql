@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION airport.payment_places_ins(_data json, _payment_id BIGINT, _flight_id BIGINT) RETURNS NUMERIC(8, 2)
     SECURITY DEFINER
     LANGUAGE plpgsql
-as
+AS
 $$
 DECLARE
 BEGIN

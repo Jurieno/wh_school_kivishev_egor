@@ -2,8 +2,8 @@ CREATE TABLE IF NOT EXISTS airport.airplanes
 (
     airplane_id       SERIAL
         CONSTRAINT pk_airplane PRIMARY KEY,
-    airline_name      varchar(11) NOT NULL,
-    name              varchar(30) NOT NULL,
+    airline_name      VARCHAR(11) NOT NULL,
+    name              VARCHAR(30) NOT NULL,
     speed             SMALLINT    NOT NULL,
     flight_range      SMALLINT    NOT NULL,
     capacity_eco      SMALLINT    NOT NULL,

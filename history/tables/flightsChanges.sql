@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS history.flightschanges
     airfield_landing_code  CHAR(3),
     price                  NUMERIC(8, 2),
     pets                   BOOLEAN,
-    dt_ch                  timestamptz
+    dt_ch                  TIMESTAMPTZ
 );
