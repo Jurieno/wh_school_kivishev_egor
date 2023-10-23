@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS history.paymentschanges
     valid       BOOLEAN,
     dt_ch       TIMESTAMPTZ,
     employee_ch INT
-)  PARTITION BY range (dt_ch);
+) PARTITION BY range (dt_ch);
