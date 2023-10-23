@@ -10,5 +10,3 @@ CREATE TABLE IF NOT EXISTS history.paymentschanges
     dt_ch       TIMESTAMPTZ,
     employee_ch INT
 )  PARTITION BY range (dt_ch);
-
-DROP TABLE history.paymentschanges;
