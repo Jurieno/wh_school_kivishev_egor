@@ -18,7 +18,7 @@ BEGIN
                                      place_num SMALLINT,
                                      airplane_id INT,
                                      type_place_id SMALLINT)
-    LEFT JOIN airport.places pp ON p.place_id = pp.place_id;
+             LEFT JOIN airport.places pp ON p.place_id = pp.place_id;
 
     IF (SELECT a.capacity_eco
         FROM airport.airplanes a

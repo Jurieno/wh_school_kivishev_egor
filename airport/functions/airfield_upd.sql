@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION airport.airfield_upd(_src jsonb) RETURNS jsonb
     SECURITY DEFINER
     LANGUAGE plpgsql
-as
+AS
 $$
 DECLARE
     _airfields_code CHAR(3);
@@ -40,7 +40,7 @@ BEGIN
         RETURN public.errmessage('airport.airfield_upd.repeat_city_street',
                                  'Аэропорт по этому адресу уже существует.',
                                  NULL);
-    end if;
+    END IF;
 
     INSERT INTO airport.airfields AS a (airfields_code,
                                         count_runway,

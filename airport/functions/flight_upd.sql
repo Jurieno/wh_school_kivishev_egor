@@ -42,7 +42,7 @@ BEGIN
 
     IF _err_message IS NOT NULL THEN
         RETURN public.errmessage('airport.flight_upd', _err_message, NULL);
-    end if;
+    END IF;
 
     WITH ins_cte AS (
         INSERT INTO airport.flights AS f (flight_id,

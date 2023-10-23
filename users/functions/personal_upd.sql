@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION users.personal_upd(_src jsonb) RETURNS jsonb
     SECURITY DEFINER
     LANGUAGE plpgsql
-as
+AS
 $$
 DECLARE
     _personal_id  INT;
@@ -21,7 +21,7 @@ BEGIN
                                      firstname VARCHAR(50),
                                      lastname varchar(50),
                                      phone_number varchar(11))
-    LEFT JOIN users.personals pp ON p.personal_id = pp.personal_id;
+             LEFT JOIN users.personals pp ON p.personal_id = pp.personal_id;
 
     INSERT INTO users.personal AS e (personal_id,
                                      role_id,

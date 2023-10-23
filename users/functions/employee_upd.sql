@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION users.employee_upd(_src jsonb) RETURNS jsonb
     SECURITY DEFINER
     LANGUAGE plpgsql
-as
+AS
 $$
 DECLARE
     _employee_id  BIGINT;
@@ -47,7 +47,7 @@ BEGIN
         RETURN public.errmessage('users.employee_upd.repeat_series_pass',
                                  'Такой пользователь с серией и номером паспорта уже зарегистрирован.',
                                  NULL);
-    end if;
+    END IF;
 
     INSERT INTO users.employees AS e (employee_id,
                                       num_series,
